@@ -1,0 +1,84 @@
+import requests
+from tkinter import *
+
+# Get the API key from OpenWeatherMap
+api_key = "32bf7bf1fb93949139ede83a11e1af68"
+
+# Create the GUI
+window = Tk()
+
+# Create the text field for the city name
+city_name_entry = Entry(window)
+
+# Create the button to fetch the weather
+def get_weather():
+    # Get the city name from the text field
+    city_name = city_name_entry.get()
+
+    # Make the API request
+    response = requests.get(
+        "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}".format(
+            city_name, api_key
+        )
+    )
+
+    # Check the response status code
+    if response.status_code == 200:
+        # The request was successful, get the weather data
+        weather_data = response.json()
+
+        # Get the temperature and description
+        temperature = weather_data["main"]["temp"]
+        description = weather_data["weather"][0]["description"]
+
+        # Update the labels in the GUI
+        temperature_label.config(text=temperature)
+        description_label.config(text=description)
+
+    else:
+        # The request was not successful, show an error message
+        print("Error fetching weather data")
+
+get_weather_button = Button(window, text="Get Weather", command=get_weather)
+
+# Create the labels to display the weather information
+temperature_label = Label(window)
+description_label = Label(window)
+
+# Pack the widgets in the GUI
+city_name_entry.pack()
+get_weather_button.pack()
+temperature_label.pack()
+description_label.pack()
+
+# Function to fetch the weather data from the OpenWeatherMap API
+def get_weather():
+    # Get the city name from the text field
+    city_name = city_name_entry.get()
+
+    # Make the API request
+    response = requests.get(
+        "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}".format(
+            city_name, api_key
+        )
+    )
+
+    # Check the response status code
+    if response.status_code == 200:
+        # The request was successful, get the weather data
+        weather_data = response.json()
+
+        # Get the temperature and description
+        temperature = weather_data["main"]["temp"]
+        description = weather_data["weather"][0]["description"]
+
+        # Update the labels in the GUI
+        temperature_label.config(text=temperature)
+        description_label.config(text=description)
+
+    else:
+        # The request was not successful, show an error message
+        print("Error fetching weather data")
+
+# Start the GUI
+window.mainloop()
